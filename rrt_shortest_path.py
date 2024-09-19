@@ -14,17 +14,44 @@ circles = []
 
 
 #Randomly generate the start point
-q_init = (random.randint(0, 100), random.randint(0, 100))
-goal = (random.randint(0, 100), random.randint(0, 100))
+# q_init = (random.randint(0, 100), random.randint(0, 100))
+# goal = (random.randint(0, 100), random.randint(0, 100))
+
+q_init = (10, 10)
+goal = (90, 90)
+
+circle1 = Circle((50, 50), 10, facecolor='black')
+circle2 = Circle((40, 30), 10, facecolor='black')
+circle3 = Circle((75, 75), 10, facecolor='black')
+circle4 = Circle((80, 20), 10, facecolor='black')
+circle5 = Circle((50, 80), 10, facecolor='black')
+
+ax.add_patch(circle1)
+ax.add_patch(circle2)
+ax.add_patch(circle3)
+ax.add_patch(circle4)
+ax.add_patch(circle5)
+
+ax.set_aspect('equal')
+
+circles.append(circle1)
+circles.append(circle2)
+circles.append(circle3)
+circles.append(circle4)
+circles.append(circle5)
+
+
+
+
 
 #Draw the circles
-for i in range(num_circles):
-    center = (random.randint(0, 100), random.randint(0, 100))
-    radius = random.randint(0, max_radius)
-    circle = Circle(center, radius, facecolor='black')
-    ax.add_patch(circle)
-    ax.set_aspect('equal')
-    circles.append(circle)
+# for i in range(num_circles):
+#     center = (random.randint(0, 100), random.randint(0, 100))
+#     radius = random.randint(0, max_radius)
+#     circle = Circle(center, radius, facecolor='black')
+#     ax.add_patch(circle)
+#     ax.set_aspect('equal')
+#     circles.append(circle)
     
     
 
@@ -33,7 +60,7 @@ family = {}
 tree.append(q_init)
 
 delta = 1
-K = 5000
+K = 2000
 
 def calc_dist(pointA, pointB):
     dist = math.sqrt(((pointB[0] - pointA[0]) ** 2) + ((pointB[1] - pointA[1]) ** 2))
@@ -112,17 +139,41 @@ for i in range(K):
     if not collision:
         tree.append(q_new)
         family.setdefault(q_new, []).append(q_near)
-    
-    goal_collision = detect_collision(q_new, goal, circles)
-    
-    
-    #FIND THE GOAL HERE
-    if not goal_collision:
-        family.setdefault(q_new, []).append(goal)
         
     
+        #FIND THE GOAL HERE
+        goal_collision = detect_collision(q_new, goal, circles)
+        
+        if not goal_collision:
+            tree.append(goal)
+            family.setdefault(q_new, []).append(goal)
+            ax.plot(q_new[0], goal[0], q_new[1], goal[1], 'b')
+            break
+        
+        
+        # if not goal_collision:
+        #     pathx = []
+        #     pathy = []
+        #     # family.setdefault(q_new, []).append(goal)
+            
+        #     current = goal
+        #     while current != q_init:
+        #         pathx.append(current[0])
+        #         pathy.append(current[1])
+        #         current = family.get(current)
+        #         if current == None:
+        #             break
+                
+        #     pathx.append(q_init[0])
+        #     pathy.append(q_init[1])
+            
+        #     ax.plot(pathx, pathy, 'y')
+        #     break
+                
     
     ax.plot([q_near[0], q_new[0]], [q_near[1], q_new[1]], 'b')
+    
+    
 
    
     

@@ -15,13 +15,6 @@ delta = 1
 K = 500
 euc_dist = 0
 
-def plot_tree(ax, tree):
-    for node in tree:
-        ax.plot(node[0], node[1], 'bo')  # Plot nodes in blue
-    for i in range(1, len(tree)):
-        q_near = tree[i-1]
-        q_new = tree[i]
-        ax.plot([q_near[0], q_new[0]], [q_near[1], q_new[1]], 'g-')
 
 def nearest_vertex(q_rand, tree):
     min = float('inf')
