@@ -5,7 +5,7 @@ from matplotlib.patches import Circle
 
 class RRT:
     def __init__(self, K, delta, num_obstacles):
-        self.fig, self.ax = plt.subplots()
+        self.fig, self.ax = plt.subplots(figsize=(20,20))
         
         self.K = K
         self.delta = delta
@@ -132,8 +132,9 @@ class RRT:
     #Run the RRT algorithm and build the tree
     def run_RRT(self):
         self.plot_goal()
+        self.ax.plot(self.q_init[0], self.q_init[1], 'ro')
         
-        for i in range(self.K):
+        while self.found_goal == False:
             q_rand = (random.randint(0, 100), random.randint(0, 100))
             q_near = self.find_nearest_vertex(q_rand)
             
@@ -146,16 +147,37 @@ class RRT:
                     
             if not collision:
                 self.tree.append(q_new)
+                self.path[q_new] = q_near
                 
             if self.goal_collision(q_near, q_new):
                 print("You found the goal!!")
-                return True
-            
+                self.found_goal = True
                 
+                current_node = q_new
+                while current_node in self.path:
+                    parent_node = self.path[current_node]
+                
+                # for i in range(len(self.path[q_new])-1):
+                #     if i == len(self.path[q_new]):
+                #         break
+                #     current_node = self.path[q_new][i]
+                #     next_node = self.path[q_new][i+1]
+                    
+                    plt.pause(0.1) 
+                    self.ax.plot([parent_node[0], current_node[0]],[parent_node[1], current_node[1]], 'r-', marker='.')
+                    
+                    current_node = parent_node
+                    
+                
+                
+                
+            
+            plt.pause(0.05) 
             self.ax.plot([q_near[0], q_new[0]], [q_near[1], q_new[1]], 'b-', marker='.')
             self.ax.plot(q_new[0], q_new[1], 'bo', marker='.')
             
         return True
+            
     
     #Plot the tree on the frame        
     def plot_RRT(self):
@@ -172,4 +194,3 @@ class RRT:
 rrt = RRT(K=500, delta=2.5, num_obstacles=9)
 rrt.plot_obstacles()
 rrt.run_RRT()
-rrt.plot_RRT()
