@@ -1,0 +1,42 @@
+https://saturncloud.io/blog/how-to-draw-a-circle-with-matplotlibpyplot-a-guide-for-data-scientists/
+
+https://matplotlib.org/
+
+
+how to create a dictionary of lists where I can append to that list
+ChatGPT said:
+ChatGPT
+
+To create a dictionary of lists where you can append items to each list, you can initialize a dictionary with list values. Here’s an example of how you can do this:
+Example
+
+python
+
+# Initialize the dictionary
+my_dict = {}
+
+# Append items to the list for a specific key
+key = 'fruits'
+my_dict.setdefault(key, []).append('apple')
+my_dict.setdefault(key, []).append('banana')
+
+# Adding items for another key
+key2 = 'vegetables'
+my_dict.setdefault(key2, []).append('carrot')
+
+# Display the dictionary
+print(my_dict)
+
+Output
+
+python
+
+{
+  'fruits': ['apple', 'banana'],
+  'vegetables': ['carrot']
+}
+
+Explanation:
+
+    .setdefault(key, []): This method checks if the key exists in the dictionary. If not, it creates an empty list for that key.
+    .append(value): Appends value to the list associated with the key.
